@@ -1,0 +1,164 @@
+---
+import { projects } from "../data/content";
+import T from "./T.astro";
+---
+<section class="section projects" id="proyectos">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="sec-index">04</span>
+      <h2 class="sec-title"><T es={projects.title.es} en={projects.title.en} /></h2>
+      <span class="sec-rule"></span>
+      <span class="sec-note"><T es={projects.note.es} en={projects.note.en} /></span>
+    </div>
+
+    <div class="proj-grid">
+      {projects.items.map((p, i) => (
+        <article class="proj-card reveal" class:list={[{ featured: p.featured }]} style={`--d:${i * 70}ms`}>
+          <div class="proj-head">
+            <span class="proj-idx">{String(i + 1).padStart(2, "0")}</span>
+            {p.featured && (
+              <span class="feat-badge">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77 5.82 21l1.18-6.88-5-4.87 7.1-1.01L12 2z"/></svg>
+                <T es="Destacado" en="Featured" />
+              </span>
+            )}
+          </div>
+
+          <div class="proj-main">
+            <h3 class="proj-name">{p.name}</h3>
+            <p class="proj-desc"><T es={p.desc.es} en={p.desc.en} block /></p>
+          </div>
+
+          <div class="proj-foot">
+            <ul class="proj-tags">
+              {p.tags.map((t) => <li class="ptag">{t}</li>)}
+            </ul>
+            <div class="proj-links">
+              <a class="plink" href={p.repo} target="_blank" rel="noopener" aria-label={`${p.name} — código`}>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.69 5.4-5.25 5.69.41.36.78 1.05.78 2.12v3.14c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z"/></svg>
+                <T es="Código" en="Code" />
+              </a>
+              {p.demo && (
+                <a class="plink demo" href={p.demo} target="_blank" rel="noopener" aria-label={`${p.name} — demo`}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+                  <T es="Demo" en="Demo" />
+                </a>
+              )}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .sec-note {
+    font-size: 0.82rem; font-weight: 500; letter-spacing: 0.02em;
+    color: var(--muted);
+    align-self: center;
+  }
+
+  .proj-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .proj-card {
+    position: relative;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.6rem;
+    background: var(--card);
+    overflow: hidden;
+    transition: border-color 0.35s var(--ease), transform 0.35s var(--ease);
+    min-height: 240px;
+    display: flex; flex-direction: column;
+  }
+  .proj-card::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), var(--accent-soft), transparent 60%);
+    opacity: 0; transition: opacity 0.4s var(--ease);
+    pointer-events: none;
+  }
+  .proj-card:hover { border-color: var(--line-2); transform: translateY(-5px); }
+  .proj-card:hover::after { opacity: 1; }
+
+  /* Featured — spans full row */
+  .proj-card.featured {
+    grid-column: 1 / -1;
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--line-2));
+    background:
+      radial-gradient(120% 140% at 100% 0%, var(--accent-soft), transparent 50%),
+      var(--card);
+    box-shadow: var(--shadow);
+  }
+  .proj-card.featured .proj-name { font-size: clamp(1.7rem, 4vw, 2.6rem); }
+  .proj-card.featured .proj-desc { font-size: 1.05rem; max-width: 60ch; }
+  @media (min-width: 760px) {
+    .proj-card.featured { padding: 2.2rem; min-height: 260px; }
+  }
+
+  .proj-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.4rem; }
+  .proj-idx {
+    font-family: var(--font-display); font-weight: 700; font-size: 1.6rem;
+    color: var(--accent-ink);
+  }
+  .feat-badge {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: #04101f; background: var(--accent);
+    padding: 0.3rem 0.7rem; border-radius: 999px;
+  }
+  .feat-badge svg { width: 12px; height: 12px; }
+
+  .proj-main { flex: 1; }
+  .proj-name {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 1.4rem; color: var(--text-strong);
+    margin-bottom: 0.6rem; line-height: 1.1;
+  }
+  .proj-desc { font-size: 0.93rem; color: var(--muted); line-height: 1.55; }
+
+  .proj-foot { margin-top: 1.4rem; display: flex; flex-direction: column; gap: 1.1rem; }
+  .proj-tags { list-style: none; display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .ptag {
+    font-size: 0.74rem; font-weight: 600; color: var(--muted);
+    border: 1px solid var(--line); border-radius: 6px; padding: 0.24rem 0.6rem;
+    transition: color 0.25s var(--ease), border-color 0.25s var(--ease);
+  }
+  .proj-card:hover .ptag { color: var(--text-strong); border-color: var(--line-2); }
+
+  .proj-links { display: flex; gap: 0.6rem; flex-wrap: wrap; position: relative; z-index: 1; }
+  .plink {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    font-size: 0.82rem; font-weight: 600;
+    color: var(--text-strong);
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    padding: 0.45rem 0.9rem;
+    transition: border-color 0.25s var(--ease), background-color 0.25s var(--ease), transform 0.25s var(--ease);
+  }
+  .plink svg { width: 15px; height: 15px; }
+  .plink:hover { border-color: var(--accent); background: var(--accent-soft); transform: translateY(-2px); }
+  .plink.demo { color: #04101f; background: var(--accent); border-color: var(--accent); }
+  .plink.demo:hover { filter: brightness(1.05); }
+
+  @media (max-width: 520px) {
+    .proj-card { padding: 1.3rem; }
+  }
+</style>
+
+<script>
+  // Spotlight follow on project cards
+  const cards = document.querySelectorAll<HTMLElement>(".proj-card");
+  cards.forEach((card) => {
+    card.addEventListener("pointermove", (e) => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty("--mx", `${e.clientX - r.left}px`);
+      card.style.setProperty("--my", `${e.clientY - r.top}px`);
+    });
+  });
+</script>

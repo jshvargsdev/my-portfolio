@@ -1,0 +1,81 @@
+---
+import { skills } from "../data/content";
+import T from "./T.astro";
+---
+<section class="section skills" id="skills">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="sec-index">03</span>
+      <h2 class="sec-title"><T es={skills.title.es} en={skills.title.en} /></h2>
+      <span class="sec-rule"></span>
+    </div>
+
+    <div class="skill-rows">
+      {skills.groups.map((g, i) => (
+        <div class="skill-row reveal" style={`--d:${i * 70}ms`}>
+          <div class="skill-label">
+            <span class="skill-num">{String(i + 1).padStart(2, "0")}</span>
+            <span class="tlabel"><T es={g.label.es} en={g.label.en} /></span>
+          </div>
+          <ul class="skill-chips">
+            {g.items.map((item) => (
+              <li class="chip">
+                <span class="chip-dot"></span>{item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .skill-rows { display: flex; flex-direction: column; }
+  .skill-row {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: clamp(1rem, 4vw, 3rem);
+    align-items: center;
+    padding: clamp(1.1rem, 3vw, 1.7rem) 0;
+    border-top: 1px solid var(--line);
+  }
+  .skill-row:last-child { border-bottom: 1px solid var(--line); }
+
+  .skill-label { display: flex; align-items: center; gap: 0.8rem; }
+  .skill-num {
+    font-family: var(--font-display);
+    font-weight: 700; font-size: 1.4rem;
+    color: var(--accent-ink);
+    opacity: 0.85;
+    line-height: 1;
+  }
+
+  .skill-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.92rem; font-weight: 600;
+    color: var(--text-strong);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.5rem 1rem;
+    background: var(--card);
+    transition: border-color 0.3s var(--ease), background-color 0.3s var(--ease),
+                transform 0.3s var(--ease), color 0.3s var(--ease);
+  }
+  .chip-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+    transition: transform 0.3s var(--ease);
+  }
+  .chip:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    transform: translateY(-3px);
+  }
+  .chip:hover .chip-dot { transform: scale(1.6); }
+
+  @media (max-width: 640px) {
+    .skill-row { grid-template-columns: 1fr; gap: 0.9rem; align-items: start; }
+  }
+</style>

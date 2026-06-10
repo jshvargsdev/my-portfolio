@@ -1,0 +1,105 @@
+---
+import { contact, profile } from "../data/content";
+import T from "./T.astro";
+---
+<section class="section contact" id="contacto">
+  <div class="container">
+    <div class="contact-wrap reveal">
+      <span class="cross cross-tl" aria-hidden="true"></span>
+      <span class="cross cross-br" aria-hidden="true"></span>
+
+      <span class="sec-index">05 · <T es="Contacto" en="Contact" /></span>
+      <h2 class="contact-title">
+        <T es="Construyamos algo" en="Let's build something" />
+        <span class="accent"><T es="juntos." en="together." /></span>
+      </h2>
+      <p class="contact-lead"><T es={contact.lead.es} en={contact.lead.en} block /></p>
+
+      <a class="email-link" href={`mailto:${profile.email}`}>
+        <span class="email-txt">{profile.email}</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+
+      <div class="contact-actions">
+        <a class="btn btn-ghost" href={profile.github} target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.69 5.4-5.25 5.69.41.36.78 1.05.78 2.12v3.14c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z"/></svg>
+          @{profile.githubHandle}
+        </a>
+        <a class="btn btn-primary" href={profile.cv} download>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg>
+          <T es={contact.cvLabel.es} en={contact.cvLabel.en} />
+        </a>
+      </div>
+
+      <div class="contact-meta">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><T es={profile.location.es} en={profile.location.en} /></span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 4h3l1.5 4-2 1.2a11 11 0 0 0 5 5l1.2-2 4 1.5v3a2 2 0 0 1-2.2 2A16 16 0 0 1 4.5 6.2 2 2 0 0 1 6.5 4Z"/></svg>{profile.phone}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-wrap {
+    position: relative;
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: clamp(2.2rem, 6vw, 4.5rem);
+    background:
+      radial-gradient(120% 120% at 50% -20%, var(--accent-soft), transparent 55%),
+      var(--card);
+    text-align: center;
+    overflow: hidden;
+  }
+  .cross { position: absolute; width: 16px; height: 16px; opacity: 0.45; }
+  .cross::before, .cross::after { content: ""; position: absolute; background: var(--accent); }
+  .cross::before { left: 50%; top: 0; width: 1px; height: 100%; transform: translateX(-50%); }
+  .cross::after  { top: 50%; left: 0; height: 1px; width: 100%; transform: translateY(-50%); }
+  .cross-tl { top: 18px; left: 18px; }
+  .cross-br { bottom: 18px; right: 18px; }
+
+  .contact .sec-index { display: inline-block; margin-bottom: 1.2rem; }
+
+  .contact-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.2rem, 7vw, 4.5rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    color: var(--text-strong);
+    margin-bottom: 1.2rem;
+  }
+  .contact-title .accent { display: block; color: transparent; -webkit-text-stroke: 1.2px var(--accent); }
+
+  .contact-lead {
+    max-width: 44ch; margin: 0 auto 2.4rem;
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  .email-link {
+    display: inline-flex; align-items: center; gap: 0.8rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.3rem, 4vw, 2.4rem);
+    color: var(--text-strong);
+    padding-bottom: 0.4rem;
+    margin-bottom: 2.4rem;
+    border-bottom: 2px solid var(--line-2);
+    transition: color 0.3s var(--ease), border-color 0.3s var(--ease), gap 0.3s var(--ease);
+    word-break: break-all;
+  }
+  .email-link svg { width: 0.8em; height: 0.8em; color: var(--accent-ink); flex: none; }
+  .email-link:hover { color: var(--accent-ink); border-color: var(--accent); gap: 1.2rem; }
+
+  .contact-actions { display: flex; flex-wrap: wrap; gap: 0.9rem; justify-content: center; margin-bottom: 2.6rem; }
+  .contact-actions svg { width: 1.1em; height: 1.1em; }
+
+  .contact-meta {
+    display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center;
+    font-size: 0.88rem; color: var(--muted); font-weight: 500;
+  }
+  .contact-meta span { display: inline-flex; align-items: center; gap: 0.5rem; }
+  .contact-meta svg { width: 16px; height: 16px; color: var(--accent-ink); }
+</style>

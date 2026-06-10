@@ -1,0 +1,67 @@
+---
+import { footer, profile, nav } from "../data/content";
+import T from "./T.astro";
+const year = 2026;
+---
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <a class="brand" href="#top">
+        <span class="brand-mark">{profile.monogram}</span>
+        <span class="brand-name">{profile.name}</span>
+      </a>
+      <p class="footer-tag"><T es={footer.tagline.es} en={footer.tagline.en} /></p>
+    </div>
+
+    <nav class="footer-nav" aria-label="Footer">
+      {nav.map((item) => (
+        <a href={`#${item.id}`}><T es={item.label.es} en={item.label.en} /></a>
+      ))}
+    </nav>
+  </div>
+
+  <div class="container footer-bottom">
+    <span>© {year} {profile.name}. <T es={footer.rights.es} en={footer.rights.en} /></span>
+    <a class="footer-up" href="#top" aria-label="Back to top">
+      <T es="Volver arriba" en="Back to top" />
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+    </a>
+  </div>
+</footer>
+
+<style>
+  .footer { border-top: 1px solid var(--line); padding-top: clamp(2.5rem, 6vw, 4rem); padding-bottom: 2rem; }
+  .footer-inner {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 2rem; flex-wrap: wrap; padding-bottom: 2.5rem;
+  }
+  .brand { display: inline-flex; align-items: center; gap: 0.7rem; margin-bottom: 0.9rem; }
+  .brand-mark {
+    display: grid; place-items: center; width: 34px; height: 34px;
+    font-family: var(--font-display); font-weight: 700; font-size: 0.9rem;
+    color: var(--accent-ink); border: 1px solid var(--line-2); border-radius: 9px;
+  }
+  .brand-name { font-family: var(--font-display); font-weight: 700; font-size: 1rem; color: var(--text-strong); }
+  .footer-tag { color: var(--muted); font-size: 0.9rem; max-width: 32ch; }
+
+  .footer-nav { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; }
+  .footer-nav a {
+    font-size: 0.92rem; font-weight: 600; color: var(--muted);
+    transition: color 0.25s var(--ease);
+  }
+  .footer-nav a:hover { color: var(--accent-ink); }
+
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 1rem; flex-wrap: wrap;
+    padding-top: 1.6rem; border-top: 1px solid var(--line);
+    font-size: 0.82rem; color: var(--faint);
+  }
+  .footer-up {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-weight: 600; color: var(--muted);
+    transition: color 0.25s var(--ease), gap 0.25s var(--ease);
+  }
+  .footer-up svg { width: 15px; height: 15px; }
+  .footer-up:hover { color: var(--accent-ink); gap: 0.8rem; }
+</style>

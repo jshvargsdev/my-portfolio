@@ -1,0 +1,236 @@
+/* ============================================================
+   Joshua Vargas — Portfolio
+   Aesthetic: "Technical Blueprint" — refined dark-tech minimalism
+   Brand: #081427 navy · #ffffff · #4adedd cyan
+   Type:  Amaranth (display) · Titillium Web (UI / body)
+   ============================================================ */
+
+/* ---------- Fonts ---------- */
+@font-face { font-display: swap; }
+
+/* ---------- Theme tokens ---------- */
+:root {
+  --font-display: "Amaranth", system-ui, sans-serif;
+  --font-body: "Titillium Web", system-ui, sans-serif;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --maxw: 1180px;
+  --pad: clamp(1.25rem, 4vw, 4rem);
+  --radius: 14px;
+
+  /* brand constants */
+  --cyan: #4adedd;
+}
+
+/* DARK (default brand) */
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg:        #081427;
+  --bg-2:      #0b1c33;
+  --bg-3:      #0f2440;
+  --text:      #e7eef7;
+  --text-strong: #ffffff;
+  --muted:     #8ba0bd;
+  --faint:     #5d7892;
+  --line:      rgba(255,255,255,0.09);
+  --line-2:    rgba(255,255,255,0.16);
+  --accent:    #4adedd;
+  --accent-ink:#6ee9e8;
+  --accent-soft: rgba(74,222,221,0.12);
+  --accent-glow: rgba(74,222,221,0.28);
+  --grid:      rgba(120,165,210,0.055);
+  --card:      rgba(255,255,255,0.025);
+  --card-hover: rgba(74,222,221,0.05);
+  --shadow:    0 30px 60px -30px rgba(0,0,0,0.7);
+}
+
+/* LIGHT */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg:        #dde3ea;
+  --bg-2:      #e8ecf1;
+  --bg-3:      #e3e8ee;
+  --text:      #1a2b43;
+  --text-strong: #081427;
+  --muted:     #51647f;
+  --faint:     #8294ac;
+  --line:      rgba(8,20,39,0.10);
+  --line-2:    rgba(8,20,39,0.18);
+  --accent:    #4adedd;
+  --accent-ink:#0a767c;
+  --accent-soft: rgba(74,222,221,0.16);
+  --accent-glow: rgba(74,222,221,0.30);
+  --grid:      rgba(8,20,39,0.045);
+  --card:      rgba(255,255,255,0.55);
+  --card-hover: rgba(255,255,255,0.78);
+  --shadow:    0 30px 60px -34px rgba(8,20,39,0.25);
+}
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-weight: 400;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.5s var(--ease), color 0.5s var(--ease);
+}
+
+/* Blueprint grid + atmospheric glow */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse 100% 80% at 50% 0%, #000 30%, transparent 85%);
+          mask-image: radial-gradient(ellipse 100% 80% at 50% 0%, #000 30%, transparent 85%);
+  pointer-events: none;
+}
+body::after {
+  content: "";
+  position: fixed;
+  top: -25vh; left: 50%;
+  width: 90vw; height: 70vh;
+  transform: translateX(-50%);
+  z-index: -2;
+  background: radial-gradient(ellipse at center, var(--accent-glow), transparent 62%);
+  opacity: 0.5;
+  pointer-events: none;
+  filter: blur(40px);
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+::selection { background: var(--accent); color: #04101f; }
+
+/* ---------- Layout helpers ---------- */
+.container {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+
+.section {
+  position: relative;
+  padding-block: clamp(4.5rem, 11vw, 9rem);
+}
+
+/* Technical section header: index + label */
+.sec-head {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  flex-wrap: wrap;
+}
+.sec-index {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.25em;
+  color: var(--accent-ink);
+}
+.sec-index::before { content: ""; }
+.sec-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.9rem, 4.5vw, 3rem);
+  line-height: 1.05;
+  color: var(--text-strong);
+  letter-spacing: -0.01em;
+}
+.sec-rule {
+  flex: 1;
+  height: 1px;
+  min-width: 40px;
+  background: linear-gradient(90deg, var(--line-2), transparent);
+  align-self: center;
+  margin-left: 0.5rem;
+}
+
+/* technical mono-ish micro label */
+.tlabel {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ---------- i18n toggle (CSS-driven) ---------- */
+.t { display: inline; }
+:root[data-lang="es"] .t[data-l="en"] { display: none; }
+:root[data-lang="en"] .t[data-l="es"] { display: none; }
+.t-block { display: block; }
+:root[data-lang="es"] .t-block[data-l="en"] { display: none; }
+:root[data-lang="en"] .t-block[data-l="es"] { display: none; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  --bh: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+  padding: 0.85rem 1.5rem;
+  border-radius: 999px;
+  position: relative;
+  transition: transform 0.35s var(--ease), background-color 0.35s var(--ease),
+              color 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  will-change: transform;
+}
+.btn svg { width: 1.05em; height: 1.05em; }
+.btn-primary {
+  background: var(--accent);
+  color: #04101f;
+  box-shadow: 0 10px 30px -10px var(--accent-glow);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px -12px var(--accent-glow);
+}
+.btn-ghost {
+  border: 1px solid var(--line-2);
+  color: var(--text-strong);
+}
+.btn-ghost:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* ---------- Reveal on scroll ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+.reveal.in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition-duration: 0.01ms !important; }
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; }
+}

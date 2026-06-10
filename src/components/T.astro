@@ -1,0 +1,18 @@
+---
+/**
+ * T — bilingual text helper.
+ * Renders both ES and EN; the active one is shown via CSS based on
+ * the [data-lang] attribute on <html>. Zero JS needed to swap content.
+ *
+ * Usage:  <T es="Hola" en="Hello" />
+ *         <T es="..." en="..." block />   // for block-level text (<p>)
+ */
+interface Props {
+  es: string;
+  en: string;
+  block?: boolean;
+}
+const { es, en, block = false } = Astro.props;
+const cls = block ? "t-block" : "t";
+---
+<span class={cls} data-l="es">{es}</span><span class={cls} data-l="en">{en}</span>

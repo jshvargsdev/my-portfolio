@@ -1,0 +1,161 @@
+---
+import "../styles/global.css";
+import { profile } from "../data/content";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = `${profile.name} — Full Stack Developer`,
+  description = "Full Stack Developer especializado en arquitecturas eficientes y aplicaciones web de alto rendimiento con JavaScript & TypeScript. | Full Stack Developer specialized in efficient architectures and high-performance web apps.",
+} = Astro.props;
+---
+<!doctype html>
+<html lang="es" data-theme="dark" data-lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={profile.name} />
+    <meta name="theme-color" content="#081427" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+
+    <!-- Fonts: Amaranth (display) + Titillium Web (body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amaranth:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Anti-FOUC: set theme & language before paint -->
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem("jv-theme");
+          if (!t) t = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          document.documentElement.setAttribute("data-theme", t);
+
+          var l = localStorage.getItem("jv-lang");
+          if (!l) {
+            var nav = (navigator.language || "es").toLowerCase();
+            l = nav.indexOf("en") === 0 ? "en" : "es";
+          }
+          document.documentElement.setAttribute("data-lang", l);
+          document.documentElement.setAttribute("lang", l);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#sobre-mi">Skip to content</a>
+    <slot />
+
+    <script>
+      const root = document.documentElement;
+
+      // ---------- Theme toggle ----------
+      const themeBtn = document.getElementById("theme-toggle");
+      themeBtn?.addEventListener("click", () => {
+        const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        root.setAttribute("data-theme", next);
+        try { localStorage.setItem("jv-theme", next); } catch (e) {}
+      });
+
+      // ---------- Language toggle ----------
+      const langBtn = document.getElementById("lang-toggle");
+      const setLang = (l: string) => {
+        root.setAttribute("data-lang", l);
+        root.setAttribute("lang", l);
+        try { localStorage.setItem("jv-lang", l); } catch (e) {}
+      };
+      langBtn?.addEventListener("click", () => {
+        setLang(root.getAttribute("data-lang") === "es" ? "en" : "es");
+      });
+
+      // ---------- Header scrolled state ----------
+      const header = document.getElementById("site-header");
+      const onScroll = () => header?.classList.toggle("scrolled", window.scrollY > 24);
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+
+      // ---------- Mobile drawer ----------
+      const menuBtn = document.getElementById("menu-btn");
+      const drawer = document.getElementById("drawer");
+      menuBtn?.addEventListener("click", () => {
+        const open = drawer?.classList.toggle("open");
+        menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+      drawer?.querySelectorAll("a").forEach((a) =>
+        a.addEventListener("click", () => {
+          drawer.classList.remove("open");
+          menuBtn?.setAttribute("aria-expanded", "false");
+        })
+      );
+
+      // ---------- Scroll reveal ----------
+      const reveals = document.querySelectorAll(".reveal");
+      if ("IntersectionObserver" in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add("in");
+                io.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+        );
+        reveals.forEach((el) => io.observe(el));
+      } else {
+        reveals.forEach((el) => el.classList.add("in"));
+      }
+
+      // ---------- Active nav link via scroll-spy ----------
+      const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>(".nav-link"));
+      const sections = navLinks
+        .map((l) => document.getElementById(l.dataset.nav || ""))
+        .filter(Boolean) as HTMLElement[];
+      if (sections.length && "IntersectionObserver" in window) {
+        const spy = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                const id = e.target.id;
+                navLinks.forEach((l) => l.classList.toggle("active", l.dataset.nav === id));
+              }
+            });
+          },
+          { threshold: 0.5, rootMargin: "-20% 0px -40% 0px" }
+        );
+        sections.forEach((s) => spy.observe(s));
+      }
+    </script>
+  </body>
+</html>
+
+<style>
+  .skip-link {
+    position: absolute;
+    left: -999px;
+    top: 0;
+    z-index: 200;
+    background: var(--accent);
+    color: #04101f;
+    padding: 0.6rem 1rem;
+    border-radius: 0 0 8px 0;
+    font-weight: 700;
+  }
+  .skip-link:focus { left: 0; }
+</style>
